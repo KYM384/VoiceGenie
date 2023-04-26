@@ -1,0 +1,19 @@
+version: '2'
+services:
+  voicevox-container:
+    container_name: voicevox-container
+    image: voicevox/voicevox_engine:cpu-ubuntu20.04-latest
+    restart: always
+    ports:
+      - "50021:50021"
+
+  api-container:
+    container_name: api-container
+    image: agent
+    restart: always
+    volumes:
+      - ./server:/app
+      - ./openssl:/openssl
+    ports:
+      - "5000:5000"
+    command: bash -c 'pip install google-api-python-client && cd /app && python app.py'
